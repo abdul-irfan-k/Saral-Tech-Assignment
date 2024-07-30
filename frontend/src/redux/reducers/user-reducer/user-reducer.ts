@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 // user sign up reducer
 export interface userSignUpDeatil {
   isContainSignUpError: boolean;
-  error: null | userSignUpError;
+  error: null;
   errorMessage?: string;
 }
 const userSignUpDeatilIntialState: userSignUpDeatil = {
@@ -32,9 +32,8 @@ export const userSignUpAction = userSignUpDetailReducer.actions;
 interface userDetail {
   _id: string;
   name: string;
-  userId: string;
   email: string;
-  profileImageUrl: string;
+  profileImageUrl?: string;
 }
 
 interface userDetailReducer {
@@ -61,7 +60,7 @@ export const userDetailReducer = createSlice({
     },
     updateUserDetail: (state, action) => {},
     removeUserDetail: (state, action) => {
-      state = null;
+      state.userDetail = null;
     },
   },
 });

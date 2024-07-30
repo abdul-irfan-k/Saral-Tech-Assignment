@@ -4,7 +4,7 @@ const socketSchema = new Schema(
   {
     ip: { type: String },
     socketId: { type: String, required: true },
-    user: { type: Schema.Types.ObjectId, ref: 'User' },
+    userId: { type: String, required: true },
   },
   {
     timestamps: true,
@@ -14,7 +14,7 @@ const socketSchema = new Schema(
 export interface socketSchemaInterface {
   socketId: string;
   ip?: string | undefined;
-  user?: Schema.Types.ObjectId | undefined;
+  userId: string;
 }
 
 socketSchema.statics.getOnlineUsers = async function () {

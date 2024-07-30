@@ -15,7 +15,6 @@ export const socketContext = React.createContext<{
 export const useSocketIoContext = () => React.useContext(socketContext);
 
 const SocketIoProvider: FC<SocketIoProviderProps> = ({ children }) => {
-  const dispatch = useAppDispatch();
   const [socket, setSocket] = useState<Socket | undefined>(undefined);
   useEffect(() => {
     (async () => {

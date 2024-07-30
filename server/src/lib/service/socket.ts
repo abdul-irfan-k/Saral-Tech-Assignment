@@ -31,13 +31,22 @@ export class SocketMessageService {
         callback,
       ) => {
         try {
+          console.log(
+            'new text message',
+            message,
+            receiverDetails,
+            senderDetails,
+            chatRoomDetail,
+            messageChannelType,
+          );
           const receiver = await getRedisSocketCached(receiverDetails._id);
-
           chatRoomRepository.getOrCreate([
             receiverDetails._id,
             senderDetails._id,
           ]);
+          console.log('created');
           if (receiver != null) {
+            console.log('receiver', receiver);
             this.socket
               .to(receiver.socketId)
               .emit('message:receiveTextMessage', {

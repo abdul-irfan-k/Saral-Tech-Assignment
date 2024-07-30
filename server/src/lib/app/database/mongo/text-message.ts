@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 const textMessageSchema = new Schema(
   {
-    _id: { type: String, default: uuidv4 },
+    _id: { type: String, default: uuidv4() },
     chatRoomId: { type: String, required: true },
     postedByUser: { type: String, required: true },
     message: { type: String, required: true },

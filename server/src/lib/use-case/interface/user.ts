@@ -53,6 +53,9 @@ export interface ISignUpUseCase {
 export interface ISignInWithGoogleUseCase {
   execute(args: ISignInWithGoogleUseCaseArgs): Promise<userEntity | null>;
 }
+export interface IGetChatRoomMessagesUseCase {
+  execute(args: any): Promise<any | null>;
+}
 type RequireAtLeastOne<T> = {
   [K in keyof T]-?: Required<Pick<T, K>> &
     Partial<Pick<T, Exclude<keyof T, K>>>;

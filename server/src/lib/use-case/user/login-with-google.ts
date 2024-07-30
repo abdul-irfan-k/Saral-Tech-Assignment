@@ -13,7 +13,6 @@ export class SignInWithGoogleUseCase implements ISignInWithGoogleUseCase {
     args: ISignInWithGoogleUseCaseArgs,
   ): Promise<userEntity | null> {
     try {
-      console.log('args', args);
       const { data: fetchedUserData } = await axios.get(
         'https://www.googleapis.com/oauth2/v1/userinfo',
         {
@@ -25,7 +24,6 @@ export class SignInWithGoogleUseCase implements ISignInWithGoogleUseCase {
         email: fetchedUserData.email,
       });
 
-      console.log('user ', user);
       return user;
     } catch (error) {
       return null;

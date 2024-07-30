@@ -16,7 +16,9 @@ export default function HomePage() {
           setChatSelection={setChatSelection}
         />
       </div>
-      <div className="hidden w-full md:block">{/* <ChatContainer /> */}</div>
+      <div className="hidden w-full md:block">
+        <ChatContainer />
+      </div>
     </div>
   );
 }

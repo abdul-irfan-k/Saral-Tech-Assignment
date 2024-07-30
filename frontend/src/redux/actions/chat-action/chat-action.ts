@@ -1,5 +1,5 @@
 import { SocketIO } from "@/components/provider/socket-io-provider/socket-io-provider";
-import { axiosChatInstance } from "@/constants/axios";
+import { axiosUserInstance } from "@/constants/axios";
 import { chatUserListAction } from "@/redux/reducers/chat-user-reducer/chat-user-reducer";
 import { chatRoomMessageAction } from "@/redux/reducers/message-reducer/message-reducer";
 import { AppDispatch } from "@/redux/store";
@@ -7,35 +7,23 @@ import { Socket } from "socket.io-client";
 import { v4 as uuid } from "uuid";
 export const addAllChatUsersAndGroup = () => async (dispatch: AppDispatch) => {
   try {
-    const { data: usersDeatail } = await axiosChatInstance.post(
-      "/getAllChatUsers"
+    const { data: usersDeatail } = await axiosUserInstance.get(
+      "/all-chat-users"
     );
-    const { data: groupDetail } = await axiosChatInstance.post(
-      "/getAllChatGroups"
-    );
+
+    console.log("all chat users", usersDeatail);
     dispatch(
       chatUserListAction.addIntialAllUserAndGroupList({
         usersDeatail,
-        groupDetail,
+        groupDetail: [],
       })
     );
   } catch (error) {}
 };
 
-export const createGroupHandler =
-  (details: Object) => async (dispatch: AppDispatch) => {
-    try {
-      const { data } = await axiosChatInstance.post("/createGroup", details);
-    } catch (error) {}
-  };
-
 export const updateCurrentChaterHandler =
   (details: any) => async (dispatch: AppDispatch) => {
     dispatch(chatUserListAction.updateCurrentUser(details));
-  };
-export const updateCurrentChatingGroupHandler =
-  (details: any) => async (dispatch: AppDispatch) => {
-    dispatch(chatUserListAction.updateCurrentChatingGroup(details));
   };
 
 export const getChatRoomMessageHandler =
@@ -54,7 +42,7 @@ export const getChatRoomMessageHandler =
   }) =>
   async (dispatch: AppDispatch) => {
     try {
-      const { data } = await axiosChatInstance.post("/getChatRoomMessage", {
+      const { data } = await axiosUserInstance.post("/getChatRoomMessage", {
         chatRoomId,
         skip,
         step,
@@ -83,64 +71,6 @@ export const getChatRoomMessageHandler =
             totatMessages: data.totalMessages,
           },
           isInitialMessages,
-        })
-      );
-      dispatch(
-        chatRoomMessageAction.addMessageAvailableChatRooms({ chatRoomId })
-      );
-    } catch (error) {
-      console.log(error);
-      return dispatch(chatRoomMessageAction.removeCurrentChaterMessage({}));
-    }
-  };
-
-export const getGroupChatRoomMessageHandler =
-  ({
-    chatRoomId,
-    myUserId,
-    skip = 0,
-    step = 10,
-    limit = 10,
-  }: {
-    chatRoomId: string;
-    myUserId: string;
-    skip: number;
-    step: number;
-    limit: number;
-  }) =>
-  async (dispatch: AppDispatch) => {
-    try {
-      const { data } = await axiosChatInstance.post(
-        "/getGroupChatRoomMessage",
-        {
-          chatRoomId,
-          skip,
-          step,
-          limit,
-          sort: "ACCENDING",
-        }
-      );
-      if (data == undefined)
-        return dispatch(chatRoomMessageAction.removeCurrentChaterMessage({}));
-      console.log("messages", data);
-      //@ts-ignore
-      const newData = data[0].messages.map((elm) => {
-        const messegeChannelType =
-          elm.postedByUser == myUserId ? "outgoingMessage" : "incomingMessage";
-        return {
-          messageData: { ...elm, messageSendedTime: new Date(elm.createdAt) },
-          messegeChannelType,
-        };
-      });
-      const isInitialMessages = skip == 0;
-      dispatch(
-        chatRoomMessageAction.addChatRoomMessage({
-          isInitialMessages,
-          messageAndChatRoomDetails: {
-            chatRoomId,
-            messages: newData,
-            totatMessages: data.totalMessages,
-          },
         })
       );
       dispatch(
@@ -188,18 +118,6 @@ export const sendTextMessageHandler =
         },
         (response: any) => {}
       );
-    } else {
-      socket.emit(
-        "groupMessage:newTextMessage",
-        {
-          message,
-          chatRoomDetail,
-          messageChannelType,
-          groupDetails: details.groupDetails,
-          senderDetails,
-        },
-        (response: any) => {}
-      );
     }
   };
 
@@ -222,13 +140,4 @@ export const receiveTextMessageHandler =
         },
       })
     );
-  };
-
-export const getIntialOnlineChatUsers =
-  (socket: Socket) => async (dispatch: AppDispatch) => {
-    try {
-      socket.emit("status:getOnlineUsers", (onlineUsers: any) => {
-        dispatch(chatUserListAction.addintialOnlineUsers({ onlineUsers }));
-      });
-    } catch (error) {}
   };

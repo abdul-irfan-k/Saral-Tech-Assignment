@@ -24,7 +24,7 @@ export const chatRoomRepository: IChatRoomRepository = {
     const messageLimit = limit != undefined ? limit : 10;
     const messageSort = sort != undefined && sort == 'ACCENDING' ? -1 : 1;
 
-    await ChatRoomModel.aggregate([
+    const chatRoomMessages = await ChatRoomModel.aggregate([
       { $match: { _id: chatRoomId } },
       {
         $project: {
@@ -149,6 +149,17 @@ export const chatRoomRepository: IChatRoomRepository = {
         },
       },
     ]);
+
+    let totalMessages: undefined | number = undefined;
+    if (skip == 0) {
+      const messageSizeData = await ChatRoomModel.aggregate([
+        { $match: { _id: chatRoomId } },
+        { $project: { totalMessages: { $size: '$chatRoomConversations' } } },
+      ]);
+      if (messageSizeData[0].totalMessages != undefined)
+        totalMessages = messageSizeData[0].totalMessages;
+    }
+    return { ...chatRoomMessages, totalMessages };
   },
 };
 

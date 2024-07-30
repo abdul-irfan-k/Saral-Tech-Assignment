@@ -68,7 +68,7 @@ const MessengerSidebar: FC<MessengerSidebarProps> = ({
                 </div>
               </div>
             </div>
-            <MessengerSidebarList />
+            <MessengerSidebarList chatSelection={chatSelection} />
           </div>
         </motion.div>
       </AnimatePresence>

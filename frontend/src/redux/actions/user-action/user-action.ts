@@ -1,4 +1,4 @@
-import { axiosUserInstance } from "@/constants/axios";
+import { axiosAuthInstance, axiosUserInstance } from "@/constants/axios";
 import {
   userDetailAction,
   userDetailState,
@@ -13,11 +13,12 @@ export const loginHandler =
   (details: Object, router: AppRouterInstance) =>
   async (dispatch: AppDispatch) => {
     try {
-      const { data } = await axiosUserInstance.post("/sign-in", { ...details });
+      const { data } = await axiosAuthInstance.post("/sign-in", { ...details });
       router.push("/");
       dispatch(
+        //@ts-ignore
         userDetailAction.setUserDetail({
-          userDetail: { name: data.name, email: data.email },
+          userDetail: { name: data.name, email: data.email, _id: data._id },
           isLogedIn: true,
         })
       );
@@ -30,12 +31,13 @@ export const signUpHandler =
   (details: Object, router: AppRouterInstance) =>
   async (dispatch: AppDispatch) => {
     try {
-      const { data } = await axiosUserInstance.post("/sign-up", { ...details });
+      const { data } = await axiosAuthInstance.post("/sign-up", { ...details });
 
       router.push("/");
       dispatch(
+        //@ts-ignore
         userDetailAction.setUserDetail({
-          userDetail: { name: data.name, email: data.email },
+          userDetail: { name: data.name, email: data.email, _id: data._id },
           isLogedIn: true,
         })
       );
@@ -56,14 +58,13 @@ export const signUpHandler =
 
 export const checkUserIsLogedIn = () => async (dispatch: AppDispatch) => {
   try {
-    const { data } = await axiosUserInstance.post("/getUserDetail");
+    const { data } = await axiosUserInstance.get("/");
     console.log("data", data);
     return dispatch(
       userDetailAction.setUserDetail({
         userDetail: {
           name: data.name,
           email: data.email,
-          userId: data.userId,
           _id: data._id,
           profileImageUrl: data.profileImageUrl,
         },
@@ -73,7 +74,11 @@ export const checkUserIsLogedIn = () => async (dispatch: AppDispatch) => {
     );
   } catch (error) {
     dispatch(
-      userDetailAction.setUserDetail({ isLogedIn: false, isChanged: true })
+      userDetailAction.setUserDetail({
+        isLogedIn: false,
+        isChanged: true,
+        userDetail: null,
+      })
     );
   }
 };
@@ -82,7 +87,7 @@ export const loginWithGoogleWithAcessToken =
   (details: Object, router: AppRouterInstance) =>
   async (dispatch: AppDispatch) => {
     try {
-      const { data } = await axiosUserInstance.post(
+      const { data } = await axiosAuthInstance.post(
         "/login-with-google",
         details
       );
@@ -92,7 +97,6 @@ export const loginWithGoogleWithAcessToken =
           userDetail: {
             name: data.name,
             email: data.email,
-            userId: data.userId,
             _id: data._id,
             profileImageUrl: data.profileImageUrl,
           },
@@ -103,18 +107,3 @@ export const loginWithGoogleWithAcessToken =
       router.push("/");
     } catch (error) {}
   };
-
-export const userIntialSettingSetupHandler = async (
-  data: Object,
-  router: AppRouterInstance
-) => {
-  try {
-    const { data: response } = await axiosUserInstance.post(
-      "/gettingStartedSettingSetup",
-      data
-    );
-    if (response.isUpdated) {
-      router.push("/messenger");
-    }
-  } catch (error) {}
-};
