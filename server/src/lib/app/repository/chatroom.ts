@@ -1,7 +1,7 @@
 import { userEntity } from '@lib/entities';
 import { ChatRoomModel, IChatRoomModel } from '../database/mongo';
 
-export const userRepository: IChatRoomRepository = {
+export const chatRoomRepository: IChatRoomRepository = {
   getOrCreate: async (userIds) => {
     const avilableRoom = await ChatRoomModel.findOne({
       userIds: { $all: userIds },

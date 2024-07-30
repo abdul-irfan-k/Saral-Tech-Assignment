@@ -1,7 +1,9 @@
 import authUseCases from '../use-case';
-import { PostSignInWithGoogleController } from './user/login-with-goole';
-import { SignInController } from './user/sign-in';
-import { SignUpController } from './user/sign-up';
+import { PostSignInWithGoogleController } from './auth/login-with-goole';
+import { SignInController } from './auth/sign-in';
+import { SignUpController } from './auth/sign-up';
+import { GetAllChatUserController } from './user/get-all-chat-user';
+import { GetUserController } from './user/get-user';
 
 const postSignIn = new SignInController(
   authUseCases.signInUseCase,
@@ -15,4 +17,9 @@ const loginWithGoogle = new PostSignInWithGoogleController(
   authUseCases.loginWithGoogleUseCase,
 );
 
-export { postSignIn, postSignUp, loginWithGoogle };
+const getUser = new GetUserController(authUseCases.getUserUseCase);
+const getAllChatUser = new GetAllChatUserController(
+  authUseCases.getAllChatUserUseCase,
+);
+
+export { postSignIn, postSignUp, loginWithGoogle, getUser, getAllChatUser };

@@ -38,6 +38,9 @@ export type ISignUpUserUseCaseArgs = Omit<userEntity, '_id'> & {
 export interface IGetUserUseCase {
   execute(args: IGetUserUseCaseArgs): Promise<userEntity | null>;
 }
+export interface IGetAllChatUserUseCase {
+  execute(args: IGetUserUseCaseArgs): Promise<any | null>;
+}
 
 export interface ISignInUseCase {
   execute(args: ISignInUserUseCaseArgs): Promise<{ isValidUser: boolean }>;
@@ -47,21 +50,6 @@ export interface ISignUpUseCase {
   execute(args: ISignUpUserUseCaseArgs): Promise<userEntity>;
 }
 
-export interface IForgotPasswordUseCase {
-  execute(args: IForgotPasswordUseCaseArgs): Promise<tokenEntity>;
-}
-
-export interface IUpdatePasswordWithTokenUseCase {
-  execute(
-    args: IUpdatePasswordWithTokenUseCaseArgs,
-  ): Promise<{ isUpdated: boolean }>;
-}
-
-export interface IUpdatePwdWithOldPwdUseCase {
-  execute(
-    args: IUpdatePwdWithOldPwdUseCaseArgs,
-  ): Promise<{ isUpdated: boolean }>;
-}
 export interface ISignInWithGoogleUseCase {
   execute(args: ISignInWithGoogleUseCaseArgs): Promise<userEntity | null>;
 }

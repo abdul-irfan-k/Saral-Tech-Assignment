@@ -1,34 +1,34 @@
 import dotenv from 'dotenv';
+import http from 'http';
+import * as socketIo from 'socket.io';
+
 import { app } from './app';
-import { connectDB } from '@config/db';
+import { connectDB } from '@config/db/mongo';
+import { connectRedis } from '@config/db/redis';
+import { SocketMessageService } from '@lib/service/socket';
 
 dotenv.config();
 
-const PORT = process.env.PORT || 8000;
+const server = http.createServer(app);
+
+const port = process.env.PORT || 8000;
+const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
 
 const startApp = async () => {
+  const io = new socketIo.Server(server, {
+    cors: {
+      origin: [frontendUrl],
+    },
+  });
+
+  io.on('connection', async (socket) => {
+    new SocketMessageService(io, socket).listen();
+  });
+
   await connectDB();
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+  await connectRedis();
+  server.listen(port, () => {
+    console.log(`Server running on port ${port}`);
   });
 };
-
 startApp();
-
-// import { createWorker } from 'tesseract.js';
-// (async () => {
-//   const worker = await createWorker('eng', 1, {
-//     logger: (m) => console.log(m), // Add logger here
-//   });
-//   const {
-//     data: { text },
-//     //@ts-ignore
-//   } = await worker.recognize(
-//     'https://tesseract.projectnaptha.com/img/eng_bw.png',
-//     //@ts-ignore
-//     { left: 0, top: 0, width: 500, height: 250 },
-//   );
-//   console.log(text);
-//   //@ts-ignore
-//   await worker.terminate();
-// })();

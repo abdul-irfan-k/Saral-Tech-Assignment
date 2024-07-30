@@ -6,6 +6,7 @@ import cors from 'cors';
 
 import { ErrorHandler } from '@lib/middleware/error-handler';
 import authRouter from '@router/user-auth';
+import userRouter from '@router/user';
 
 const app = express();
 
@@ -22,5 +23,6 @@ app.use(cors(corsOptions));
 app.use(bodyParser());
 
 app.use('/api/auth/', authRouter);
+app.use('/api/user/', userRouter);
 app.use(ErrorHandler);
 export { app };

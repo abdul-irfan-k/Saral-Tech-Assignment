@@ -1,7 +1,7 @@
 import { textEntity } from '@lib/entities/text-message';
 import { ITextMessageModel, TextMessageModel } from '../database/mongo';
 
-export const userRepository: IUserRepository = {
+export const textMessageRepository: ITextMessageRepository = {
   create: async (messageData) => {
     const newMessage = new TextMessageModel(messageData);
     await newMessage.save();
@@ -9,7 +9,7 @@ export const userRepository: IUserRepository = {
   },
 };
 
-export interface IUserRepository {
+export interface ITextMessageRepository {
   create: (
     userData: Omit<textEntity, '_id'> & { _id?: string },
   ) => Promise<ITextMessageModel>;
