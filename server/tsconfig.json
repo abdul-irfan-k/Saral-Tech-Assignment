@@ -1,0 +1,45 @@
+{
+  "compilerOptions": {
+    "target": "es2022",
+    "module": "node16",
+    "lib": [
+      "ES2022"
+    ],
+    "moduleResolution": "node16",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": "./",
+    "paths": {
+      "@config/*": [
+        "src/config/*"
+      ],
+      "@event/*": [
+        "src/event/*"
+      ],
+      "@lib/*": [
+        "src/lib/*"
+      ],
+      "@router/*": [
+        "src/router/*"
+      ],
+      "@/*": [
+        "src/*"
+      ]
+    },
+    "outDir": "./dist",
+    "typeRoots": [
+      "src/types",
+      "node_modules/@types"
+    ],
+    "types": [
+      "jest",
+      "express.d.ts"
+    ]
+  },
+  "include": [
+    "src/**/*",
+    "test/**/*"
+  ]
+}
