@@ -1,4 +1,7 @@
 # Saral Tech Assignment
+## Video Demo
+[Screencast from 2024-07-30 22-37-04.webm](https://github.com/user-attachments/assets/22cb8e5a-d9dd-48ee-a533-4bad65cb05d0)
+
 
 ## Table of Contents
 
