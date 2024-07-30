@@ -14,7 +14,6 @@ const LoginWithGoogle = () => {
   const dispatch = useAppDispatch();
 
   const loginWithGoogleSuccessHandler = (response: Object) => {
-    console.log("response", response);
     dispatch(
       loginWithGoogleWithAcessToken(
         // @ts-ignore

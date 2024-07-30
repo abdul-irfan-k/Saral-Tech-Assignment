@@ -42,16 +42,6 @@ export const signUpHandler =
         })
       );
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        // const { isValid, errorType, errorMessage } = error.response?.data;
-        // dispatch(
-        //   userSignUpAction.setUserSignUpError({
-        //     error: errorType,
-        //     errorMessage,
-        //   })
-        // );
-        return console.log(error);
-      }
       console.log(error);
     }
   };

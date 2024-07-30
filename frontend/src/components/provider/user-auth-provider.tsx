@@ -8,8 +8,13 @@ import { useAppDispatch } from "@/redux/store";
 import { useSocketIoContext } from "./socket-io-provider/socket-io-provider";
 import {
   addAllChatUsersAndGroup,
+  getChatRoomMessageHandler,
   receiveTextMessageHandler,
 } from "@/redux/actions/chat-action/chat-action";
+import {
+  chatRoomMessageAction,
+  chatRoomMessagesReducerSlate,
+} from "@/redux/reducers/message-reducer/message-reducer";
 
 interface UserAuthProviderProps {
   children: React.ReactNode;
@@ -25,6 +30,13 @@ const UserAuthProvider: FC<UserAuthProviderProps> = ({ children }) => {
     isLogedIn,
   } = useSelector((state: { userDetail: userDetailState }) => state.userDetail);
 
+  const { currentChaterDetail } = useSelector(
+    (state: { chatUsersList: chatUsersListReducerState }) => state.chatUsersList
+  );
+  const { messageAvailableChatRoom } = useSelector(
+    (state: { chatRoomsMessageReducer: chatRoomMessagesReducerSlate }) =>
+      state.chatRoomsMessageReducer
+  );
   const { socket } = useSocketIoContext();
 
   useEffect(() => {
@@ -32,7 +44,6 @@ const UserAuthProvider: FC<UserAuthProviderProps> = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    console.log("socket join", isLogedIn, socket);
     if (isLogedIn && socket != undefined) {
       socket.emit("socket:join", { userId: userDetails?._id });
     }
@@ -45,9 +56,36 @@ const UserAuthProvider: FC<UserAuthProviderProps> = ({ children }) => {
   useEffect(() => {
     if (socket == undefined) return;
     socket.on("message:receiveTextMessage", (messageData) => {
+      console.log("receive text message");
       dispatch(receiveTextMessageHandler(messageData));
     });
   }, [dispatch, isLogedIn, socket]);
+
+  useEffect(() => {
+    if (currentChaterDetail == null || userDetails == null) return;
+    const isAlreadAvailableMessage = messageAvailableChatRoom.some(
+      (chatRoom) => chatRoom.chatRoomId == currentChaterDetail?.chatRoomId
+    );
+    if (isAlreadAvailableMessage) {
+      dispatch(
+        chatRoomMessageAction.addCurrentChaterMessage({
+          chatRoomId: currentChaterDetail?.chatRoomId,
+        })
+      );
+      return;
+    }
+
+    if (currentChaterDetail?.currentChaterType == "user") {
+      dispatch(
+        //@ts-ignore
+        getChatRoomMessageHandler({
+          chatRoomId: currentChaterDetail?.chatRoomId,
+          //@ts-ignore
+          myUserId: userDetails?._id,
+        })
+      );
+    }
+  }, [currentChaterDetail?._id]);
 
   return <>{children}</>;
 };

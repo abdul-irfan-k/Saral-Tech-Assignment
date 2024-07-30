@@ -11,7 +11,6 @@ export const addAllChatUsersAndGroup = () => async (dispatch: AppDispatch) => {
       "/all-chat-users"
     );
 
-    console.log("all chat users", usersDeatail);
     dispatch(
       chatUserListAction.addIntialAllUserAndGroupList({
         usersDeatail,
@@ -42,7 +41,7 @@ export const getChatRoomMessageHandler =
   }) =>
   async (dispatch: AppDispatch) => {
     try {
-      const { data } = await axiosUserInstance.post("/getChatRoomMessage", {
+      const { data } = await axiosUserInstance.post("/all-chat-room-messages", {
         chatRoomId,
         skip,
         step,
