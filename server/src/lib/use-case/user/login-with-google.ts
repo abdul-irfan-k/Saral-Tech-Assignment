@@ -19,7 +19,6 @@ export class SignInWithGoogleUseCase implements ISignInWithGoogleUseCase {
           headers: { Authorization: `Bearer ${args.accessToken}` },
         },
       );
-      console.log(fetchedUserData);
       const user = await this.userRepository.getUser({
         email: fetchedUserData.email,
       });

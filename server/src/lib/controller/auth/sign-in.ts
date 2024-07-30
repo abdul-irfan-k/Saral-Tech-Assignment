@@ -25,7 +25,6 @@ export class SignInController {
     if (!isValidUser)
       throw new BadRequestError({ code: 400, message: 'invalid password' });
 
-    console.log('body', req.body);
     const { token: accessToken } = await createJwtTokenHandler({
       _id: userDetail._id,
       email: userDetail.email,

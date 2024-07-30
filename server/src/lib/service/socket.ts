@@ -1,5 +1,8 @@
 import SocketModel from '@lib/app/database/mongo/socket';
-import { getRedisSocketCached } from '@lib/app/database/redis/cache-model';
+import {
+  getRedisSocketCached,
+  removeRedisSocketCachedData,
+} from '@lib/app/database/redis/cache-model';
 import { chatRoomRepository, textMessageRepository } from '@lib/app/repository';
 import mongoose from 'mongoose';
 import { Server, Socket } from 'socket.io';
@@ -18,6 +21,19 @@ export class SocketMessageService {
       });
     });
 
+    this.socket.on('disconnect', async () => {
+      const socketData = await SocketModel.findOne({
+        socketId: this.socket.id,
+      });
+      if (socketData != null)
+        await removeRedisSocketCachedData(`socket:${socketData.userId}`);
+      await SocketModel.deleteMany({
+        socketId: this.socket.id,
+      });
+
+      if (socketData == null) return;
+    });
+
     this.socket.on(
       'message:newTextMessage',
       async (
@@ -31,22 +47,14 @@ export class SocketMessageService {
         callback,
       ) => {
         try {
-          console.log(
-            'new text message',
-            message,
-            receiverDetails,
-            senderDetails,
-            chatRoomDetail,
-            messageChannelType,
-          );
           const receiver = await getRedisSocketCached(receiverDetails._id);
-          chatRoomRepository.getOrCreate([
+          await chatRoomRepository.getOrCreate([
             receiverDetails._id,
             senderDetails._id,
           ]);
-          console.log('created');
+
           if (receiver != null) {
-            console.log('receiver', receiver);
+            console.log('receiver');
             this.socket
               .to(receiver.socketId)
               .emit('message:receiveTextMessage', {

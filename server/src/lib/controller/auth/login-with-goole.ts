@@ -7,7 +7,6 @@ import { createJwtTokenHandler } from '@lib/util/jsonwebtoken';
 export class PostSignInWithGoogleController {
   constructor(private signInWithGoogleUseCase: ISignInWithGoogleUseCase) {}
   async processRequest(req: Request, res: Response, next: NextFunction) {
-    console.log('req body', req.body);
     const { acessToken: token } = req.body;
     const userDetail = await this.signInWithGoogleUseCase.execute({
       accessToken: token,

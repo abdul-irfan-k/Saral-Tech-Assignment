@@ -15,4 +15,10 @@ router.get(
   isUserAuthenticated,
   makeExpressCallBack(userController.getUser),
 );
+
+router.post(
+  '/all-chat-room-messages',
+  isUserAuthenticated,
+  makeExpressCallBack(userController.getChatRoomMessages),
+);
 export default router;

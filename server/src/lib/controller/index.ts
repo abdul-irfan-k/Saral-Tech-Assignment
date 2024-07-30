@@ -2,6 +2,7 @@ import authUseCases from '../use-case';
 import { PostSignInWithGoogleController } from './auth/login-with-goole';
 import { SignInController } from './auth/sign-in';
 import { SignUpController } from './auth/sign-up';
+import { GetAllChatRoomMessageController } from './user/get-all-chat-room-messages';
 import { GetAllChatUserController } from './user/get-all-chat-user';
 import { GetUserController } from './user/get-user';
 
@@ -21,5 +22,15 @@ const getUser = new GetUserController(authUseCases.getUserUseCase);
 const getAllChatUser = new GetAllChatUserController(
   authUseCases.getAllChatUserUseCase,
 );
+const getChatRoomMessages = new GetAllChatRoomMessageController(
+  authUseCases.getAllChatRoomMessage,
+);
 
-export { postSignIn, postSignUp, loginWithGoogle, getUser, getAllChatUser };
+export {
+  postSignIn,
+  postSignUp,
+  loginWithGoogle,
+  getUser,
+  getAllChatUser,
+  getChatRoomMessages,
+};

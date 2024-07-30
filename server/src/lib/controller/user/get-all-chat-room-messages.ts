@@ -16,7 +16,7 @@ export class GetAllChatRoomMessageController {
       step,
       limit,
       sort,
-    });
+    });;
     return res.status(200).json(chatRoomMessage);
   }
 }

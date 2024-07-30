@@ -60,27 +60,6 @@ export const chatRoomRepository: IChatRoomRepository = {
                     else: '$$REMOVE',
                   },
                 },
-                voiceMessageIds: {
-                  $cond: {
-                    if: { $eq: ['$$message.type', 'voiceMessage'] },
-                    then: '$$message.id',
-                    else: '$$REMOVE',
-                  },
-                },
-                imageMessageIds: {
-                  $cond: {
-                    if: { $eq: ['$$message.type', 'imageMessage'] },
-                    then: '$$message.id',
-                    else: '$$REMOVE',
-                  },
-                },
-                videoMessageIds: {
-                  $cond: {
-                    if: { $eq: ['$$message.type', 'videoMessage'] },
-                    then: '$$message.id',
-                    else: '$$REMOVE',
-                  },
-                },
               },
             },
           },
@@ -95,46 +74,11 @@ export const chatRoomRepository: IChatRoomRepository = {
           as: 'textMessage',
         },
       },
-      {
-        $lookup: {
-          from: 'voicemessages',
-          let: { voiceMessageIds: '$allMessages.voiceMessageIds' },
-          pipeline: [
-            { $match: { $expr: { $in: ['$_id', '$$voiceMessageIds'] } } },
-          ],
-          as: 'voiceMessage',
-        },
-      },
-      {
-        $lookup: {
-          from: 'imagemessages',
-          let: { imageMessageIds: '$allMessages.imageMessageIds' },
-          pipeline: [
-            { $match: { $expr: { $in: ['$_id', '$$imageMessageIds'] } } },
-          ],
-          as: 'imageMessage',
-        },
-      },
-      {
-        $lookup: {
-          from: 'videomessages',
-          let: { videoMessageIds: '$allMessages.videoMessageIds' },
-          pipeline: [
-            { $match: { $expr: { $in: ['$_id', '$$videoMessageIds'] } } },
-          ],
-          as: 'videoMessage',
-        },
-      },
 
       {
         $addFields: {
           messages: {
-            $concatArrays: [
-              '$textMessage',
-              '$voiceMessage',
-              '$imageMessage',
-              '$videoMessage',
-            ],
+            $concatArrays: ['$textMessage'],
           },
         },
       },

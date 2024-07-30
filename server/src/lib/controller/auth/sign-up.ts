@@ -15,7 +15,6 @@ export class SignUpController {
       throw new BadRequestError({ code: 400, validatorError: errors.array() });
     }
     const { name, email, password, profileImageUrl } = req.body;
-    console.log('working');
     const oldUser = await this.getUserUseCase.execute({ email });
 
     if (oldUser != null)
