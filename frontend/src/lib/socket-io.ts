@@ -1,8 +1,6 @@
 import { Socket, io } from "socket.io-client";
 
-const serverPort = process.env.SERVER_PORT || 8000;
-// const serverUrl = process.env.NODE_ENV === 'production'? process.env.SERVER_URL : `http://localhost:${serverPort}`
-const serverUrl = `http://localhost:${serverPort}`;
+const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL || `http://localhost:8000`;
 
 export class SocketClient {
   socket?: Socket;

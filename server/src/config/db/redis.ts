@@ -1,14 +1,14 @@
 import { createClient } from 'redis';
 
 export const redisClient = createClient({
-  password: 'irfan7676',
+  password: process.env.REDIS_PASSWORD,
 });
 
 export const connectRedis = async () => {
   try {
     await redisClient.connect();
-    const developmentBuild = process.env.NODE_ENV == 'DEVELOPMENT';
-    if (developmentBuild) redisClient.flushAll();
+    const production = process.env.NODE_ENV == 'PRODUCTION';
+    if (!production) redisClient.flushAll();
   } catch (error) {
     console.log('redis error ', error);
   }

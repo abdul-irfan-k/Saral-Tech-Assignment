@@ -55,6 +55,7 @@ const UserAuthProvider: FC<UserAuthProviderProps> = ({ children }) => {
 
   useEffect(() => {
     if (socket == undefined) return;
+    console.log("socket id", socket, socket.id);
     socket.on("message:receiveTextMessage", (messageData) => {
       console.log("receive text message");
       dispatch(receiveTextMessageHandler(messageData));

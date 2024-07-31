@@ -23,10 +23,11 @@ const LoginWithGoogle = () => {
     );
   };
 
+  console.log("google client id", process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID);
   return (
     <div>
       <LoginSocialGoogle
-        client_id="1032047586980-djcvj4ahkk01echih4icsc778an0tpa6.apps.googleusercontent.com"
+        client_id={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}
         onResolve={loginWithGoogleSuccessHandler}
         onReject={(err: Object) => console.log("rejct ", err)}
       >

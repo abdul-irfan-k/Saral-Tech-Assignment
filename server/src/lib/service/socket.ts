@@ -4,7 +4,6 @@ import {
   removeRedisSocketCachedData,
 } from '@lib/app/database/redis/cache-model';
 import { chatRoomRepository, textMessageRepository } from '@lib/app/repository';
-import mongoose from 'mongoose';
 import { Server, Socket } from 'socket.io';
 export class SocketMessageService {
   constructor(
@@ -14,6 +13,7 @@ export class SocketMessageService {
   listen() {
     this.socket.on('socket:join', async ({ userId }) => {
       const ip = this.getSocketIp();
+      await SocketModel.deleteMany({ userId });
       await SocketModel.create({
         socketId: this.socket.id,
         ip,
@@ -54,7 +54,7 @@ export class SocketMessageService {
           ]);
 
           if (receiver != null) {
-            console.log('receiver');
+            console.log('receiver', receiver.socketId);
             this.socket
               .to(receiver.socketId)
               .emit('message:receiveTextMessage', {

@@ -1,13 +1,12 @@
 import dotenv from 'dotenv';
 import http from 'http';
 import * as socketIo from 'socket.io';
+dotenv.config();
 
 import { app } from './app';
 import { connectDB } from '@config/db/mongo';
 import { connectRedis } from '@config/db/redis';
 import { SocketMessageService } from '@lib/service/socket';
-
-dotenv.config();
 
 const server = http.createServer(app);
 
