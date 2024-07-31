@@ -6,14 +6,10 @@
 
 ## Table of Contents
 
-1. [Introduction](#introduction)
-2. [Features](#features)
-3. [Technologies Used](#technologies-used)
-4. [Installation](#installation)
-5. [Usage](#usage)
-6. [Project Structure](#project-structure)
-7. [Contributing](#contributing)
-8. [License](#license)
+1. [Features](#features)
+2. [Technologies Used](#technologies-used)
+3. [Installation](#installation)
+4. [Usage](#usage)
 
 ## Features
 
@@ -77,7 +73,6 @@
 
     - Create a `.env` file in the `backend` directory and add the following:
 
-          ```env
            NODE_ENV=TEST
            REDIS_PASSWORD=
            MOGNOGO_DB_URL=
@@ -85,10 +80,6 @@
            PORT=8000
            USER_JWT_ACCESS_TOKEN_SECRET=strong-secret
            USER_JWT_REFRESH_TOKEN_SECRET=strong-secret
-
-    ```
-
-    ```
 
 4.  Run the development servers:
 
