@@ -1,7 +1,4 @@
 # Saral Tech Assignment
-## Video Demo
-[Screencast from 2024-07-30 22-37-04.webm](https://github.com/user-attachments/assets/22cb8e5a-d9dd-48ee-a533-4bad65cb05d0)
-
 
 ## Video Demo
 
@@ -24,6 +21,9 @@
 - Real-time updates using Socket.IO
 - State management with Redux
 - Clean Architecture Project Structure for backend
+- Used Mongodb Database
+- Used Redis Database for caching
+  \_ Used express-validator for the request validation
 
 ## Technologies Used
 
@@ -36,6 +36,7 @@
 
 ### Backend
 
+- Redis ,Mongodb, JWT, Express-Validator, Socket Io
 - Clean Architecture principles
 - Business Logic and Application Logic separated according to clean architecture
 
@@ -49,7 +50,7 @@
     git clone https://github.com/abdul-irfan-k/Saral-Tech-Assignment.git
     ```
 
-2.  Install dependencies for both frontend and backend:
+2.  Install dependencies for both frontend and server:
 
     ```bash
     # Install frontend dependencies
@@ -59,7 +60,7 @@
     pnpm install
 
     # Install backend dependencies
-    cd ../backend
+    cd ../server
     npm install
     # or
     pnpm install
@@ -112,7 +113,7 @@
 1. Start the backend server:
 
    ```bash
-   cd backend
+   cd server
    npm run dev
    # or
    pnpm dev
@@ -131,7 +132,11 @@
 
 Open your browser and navigate to `http://localhost:3000`.
 
-### Google Login
+### Sign-Up (http://localhost:3000/sign-up)
+
+Create account with email and password
+
+### Login (http://localhost:3000/login)
 
 Click on the "Login with Google" button on the homepage to authenticate using your Google account.
 
